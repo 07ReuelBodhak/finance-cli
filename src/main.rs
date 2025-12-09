@@ -2,12 +2,14 @@ mod models;
 mod collections;
 mod config;
 mod parser;
+mod summarizer;
 
 use std::env;
 use std::process;
 use config::config::Config;
 use collections::ledger::Ledger;
 use models::transaction::{ExpenseType};
+use summarizer::summarizer::summary;
 
 fn main() {
     let args:Vec<String> = env::args().collect();
@@ -24,7 +26,8 @@ fn main() {
         }
         config::config::Command::Summary => {
             println!("Showing summary:");
-        }
+            summary(); 
+        }  
         config::config::Command::Income { description, category, amount } => {
             let mut ledger = Ledger::new();
             ledger.add_transaction(description, category, amount.parse().unwrap(),ExpenseType::Earned);
